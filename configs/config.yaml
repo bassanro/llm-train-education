@@ -1,0 +1,91 @@
+# Model configuration
+model:
+  base_model: "microsoft/DialoGPT-medium"  # Base model for fine-tuning
+  model_name: "napal-test-generator"
+  max_length: 1024
+  temperature: 0.7
+  top_p: 0.9
+
+# Training configuration
+training:
+  output_dir: "./models/checkpoints"
+  num_train_epochs: 5
+  per_device_train_batch_size: 4
+  per_device_eval_batch_size: 4
+  gradient_accumulation_steps: 4
+  learning_rate: 5e-5
+  weight_decay: 0.01
+  warmup_steps: 100
+  logging_steps: 10
+  save_steps: 500
+  eval_steps: 500
+  save_total_limit: 3
+  dataloader_num_workers: 2
+  fp16: true
+
+# LoRA configuration for efficient fine-tuning
+lora:
+  r: 16
+  lora_alpha: 32
+  target_modules: ["q_proj", "v_proj"]
+  lora_dropout: 0.1
+  bias: "none"
+  task_type: "CAUSAL_LM"
+
+# Data configuration
+data:
+  train_file: "./data/processed/train_data.jsonl"
+  eval_file: "./data/processed/eval_data.jsonl"
+  max_source_length: 512
+  max_target_length: 512
+
+# Question generation configuration
+generation:
+  num_questions_per_test: 20
+  difficulty_distribution:
+    level_1: 0.2  # 20% easy questions
+    level_2: 0.4  # 40% medium questions
+    level_3: 0.3  # 30% challenging questions
+    level_4: 0.1  # 10% advanced questions
+  subject_distribution:
+    reading_comprehension: 0.4
+    vocabulary: 0.3
+    writing: 0.2
+    language_conventions: 0.1
+  question_type_distribution:
+    multiple_choice: 0.5
+    short_answer: 0.3
+    extended_response: 0.2
+
+# Scoring configuration
+scoring:
+  similarity_threshold: 0.8
+  use_semantic_matching: true
+  rubric_weights:
+    content_accuracy: 0.6
+    language_quality: 0.3
+    completeness: 0.1
+
+# Evaluation configuration
+evaluation:
+  metrics: ["bleu", "rouge", "bert_score"]
+  human_eval_sample_size: 50
+  quality_thresholds:
+    min_readability_score: 3.0  # Flesch-Kincaid grade level
+    max_readability_score: 4.0
+    min_question_quality: 0.7
+    min_answer_accuracy: 0.8
+
+# Paths
+paths:
+  data_dir: "./data"
+  model_dir: "./models"
+  output_dir: "./generated_tests"
+  logs_dir: "./logs"
+
+# Year 3 specific settings
+year3_settings:
+  vocabulary_level: "elementary"
+  sentence_complexity: "simple_compound"
+  content_appropriateness: "age_8_9"
+  reading_level: "grade_3"

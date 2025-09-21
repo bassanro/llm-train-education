@@ -1,0 +1,145 @@
+{
+  "test_metadata": {
+    "test_id": "NAPAL_Y3_2025_001",
+    "year": 2025,
+    "grade_level": "Year 3",
+    "subject_areas": ["reading_comprehension", "vocabulary", "writing"],
+    "total_questions": 15,
+    "estimated_duration_minutes": 45,
+    "created_date": "2025-09-21T10:00:00Z"
+  },
+  "questions": [
+    {
+      "question_id": "Q001",
+      "question_type": "multiple_choice",
+      "subject_area": "reading_comprehension",
+      "difficulty_level": 2,
+      "learning_objective": "Identify main idea in a short passage",
+      "stimulus": {
+        "type": "text",
+        "content": "Emma loves going to the library every Saturday. She enjoys reading adventure books about brave knights and magical creatures. Last week, she read a story about a dragon who helped a village by bringing rain during a drought. Emma dreams of writing her own adventure story one day.",
+        "title": "Emma's Library Visits"
+      },
+      "question_text": "What is the main idea of this passage?",
+      "options": [
+        {
+          "option_id": "A",
+          "text": "Emma reads about dragons"
+        },
+        {
+          "option_id": "B",
+          "text": "Emma loves reading adventure books at the library"
+        },
+        {
+          "option_id": "C",
+          "text": "Libraries are open on Saturdays"
+        },
+        {
+          "option_id": "D",
+          "text": "Dragons can help villages"
+        }
+      ],
+      "correct_answer": {
+        "answer": "B",
+        "explanation": "The passage is primarily about Emma's love for reading adventure books at the library, which is the main topic throughout."
+      },
+      "scoring_rubric": {
+        "points_possible": 1,
+        "scoring_criteria": [
+          {
+            "points": 1,
+            "criteria": "Correctly identifies option B"
+          },
+          {
+            "points": 0,
+            "criteria": "Selects any other option"
+          }
+        ]
+      },
+      "tags": ["main_idea", "reading_comprehension", "narrative_text"]
+    },
+    {
+      "question_id": "Q002",
+      "question_type": "short_answer",
+      "subject_area": "vocabulary",
+      "difficulty_level": 2,
+      "learning_objective": "Use context clues to determine word meaning",
+      "stimulus": {
+        "type": "text",
+        "content": "The tiny kitten was so fragile that Sarah had to handle it very carefully, like holding a delicate flower.",
+        "title": "The Kitten"
+      },
+      "question_text": "What does the word 'fragile' mean in this sentence?",
+      "correct_answer": {
+        "answer": "easily broken or damaged",
+        "explanation": "The context clues 'handle very carefully' and 'like holding a delicate flower' suggest that fragile means easily broken or damaged.",
+        "acceptable_variations": [
+          "delicate",
+          "easily broken",
+          "breakable",
+          "weak",
+          "easily damaged"
+        ]
+      },
+      "scoring_rubric": {
+        "points_possible": 2,
+        "scoring_criteria": [
+          {
+            "points": 2,
+            "criteria": "Provides correct meaning with clear understanding (easily broken, delicate, etc.)"
+          },
+          {
+            "points": 1,
+            "criteria": "Shows partial understanding but may be incomplete"
+          },
+          {
+            "points": 0,
+            "criteria": "Incorrect or no answer"
+          }
+        ]
+      },
+      "tags": ["vocabulary", "context_clues", "word_meaning"]
+    },
+    {
+      "question_id": "Q003",
+      "question_type": "extended_response",
+      "subject_area": "writing",
+      "difficulty_level": 3,
+      "learning_objective": "Write a descriptive paragraph using sensory details",
+      "stimulus": {
+        "type": "none"
+      },
+      "question_text": "Write a paragraph describing your favorite place to visit. Use words that help the reader see, hear, smell, or feel what it's like to be there. Your paragraph should be at least 4 sentences long.",
+      "correct_answer": {
+        "answer": "Sample response should include descriptive language and sensory details",
+        "explanation": "Responses should demonstrate use of sensory language and descriptive vocabulary appropriate for Year 3 level."
+      },
+      "scoring_rubric": {
+        "points_possible": 4,
+        "scoring_criteria": [
+          {
+            "points": 4,
+            "criteria": "Excellent: Clear topic, rich sensory details, well-organized, 4+ sentences, good spelling/grammar"
+          },
+          {
+            "points": 3,
+            "criteria": "Good: Clear topic, some sensory details, mostly organized, 4+ sentences, minor errors"
+          },
+          {
+            "points": 2,
+            "criteria": "Satisfactory: Identifiable topic, limited sensory details, basic organization, 3-4 sentences"
+          },
+          {
+            "points": 1,
+            "criteria": "Developing: Unclear topic, minimal sensory details, 2-3 sentences, some errors"
+          },
+          {
+            "points": 0,
+            "criteria": "Inadequate: No clear topic, no sensory details, less than 2 sentences, or no response"
+          }
+        ]
+      },
+      "tags": ["writing", "descriptive_writing", "sensory_details", "paragraph_writing"]
+    }
+  ]
+}
