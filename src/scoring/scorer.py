@@ -20,7 +20,6 @@ import nltk
 from nltk.tokenize import word_tokenize, sent_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
-import spacy
 
 # Download required NLTK data
 try:
@@ -36,6 +35,11 @@ except LookupError:
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+try:
+    import spacy
+except ImportError:
+    spacy = None
+
 class NAPALScorer:
     """Automated scorer for NAPAL test responses"""
 
@@ -47,11 +51,15 @@ class NAPALScorer:
         self.stemmer = PorterStemmer()
         self.stop_words = set(stopwords.words('english'))
 
-        try:
-            self.nlp = spacy.load("en_core_web_sm")
-        except OSError:
-            logger.warning("spaCy model not found. Some features may not work.")
+        if spacy is None:
+            logger.warning("spaCy package not installed. Some features may not work.")
             self.nlp = None
+        else:
+            try:
+                self.nlp = spacy.load("en_core_web_sm")
+            except OSError:
+                logger.warning("spaCy model not found. Some features may not work.")
+                self.nlp = None
 
         # Initialize vectorizer for semantic similarity
         self.vectorizer = TfidfVectorizer(

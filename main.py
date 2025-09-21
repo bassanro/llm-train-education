@@ -6,15 +6,15 @@ import argparse
 import sys
 from pathlib import Path
 
-# Add src to Python path
-sys.path.insert(0, str(Path(__file__).parent / "src"))
+# Add project root to Python path so `src` is importable as a package
+sys.path.insert(0, str(Path(__file__).parent))
 
-from training.prepare_data import main as prepare_data_main
-from training.fine_tune import main as fine_tune_main
-from generation.test_generator import main as generate_test_main
-from scoring.scorer import main as score_test_main
-from evaluation.evaluator import main as evaluate_main
-from workflow.annual_manager import main as workflow_main
+from src.training.prepare_data import main as prepare_data_main
+from src.training.fine_tune import main as fine_tune_main
+from src.generation.test_generator import main as generate_test_main
+from src.scoring.scorer import main as score_test_main
+from src.evaluation.evaluator import main as evaluate_main
+from src.workflow.annual_manager import main as workflow_main
 
 def main():
     """Main CLI interface for NAPAL LLM System"""
@@ -136,7 +136,7 @@ Examples:
 def score_student_responses(test_file: str, responses_file: str, output_file: str = None):
     """Score student responses using the scoring system"""
     import json
-    from scoring.scorer import NAPALScorer
+    from src.scoring.scorer import NAPALScorer
 
     # Load test data
     with open(test_file, 'r') as f:
@@ -162,7 +162,7 @@ def score_student_responses(test_file: str, responses_file: str, output_file: st
 def evaluate_test_file(test_file: str, output_file: str = None):
     """Evaluate a test file for quality"""
     import json
-    from evaluation.evaluator import NAPALEvaluator
+    from src.evaluation.evaluator import NAPALEvaluator
 
     # Load test data
     with open(test_file, 'r') as f:

@@ -6,13 +6,24 @@ import json
 from pathlib import Path
 import sys
 
-# Add src to path
-sys.path.insert(0, str(Path(__file__).parent / "src"))
+# Add project root to path (so `src` is a package and internal relative imports work)
+sys.path.insert(0, str(Path(__file__).parent))
 
-from generation.test_generator import NAPALTestGenerator
-from scoring.scorer import NAPALScorer
-from evaluation.evaluator import NAPALEvaluator
-from workflow.annual_manager import AnnualWorkflowManager
+# Guard imports and give a helpful message if dependencies are missing
+try:
+    from src.generation.test_generator import NAPALTestGenerator
+    from src.scoring.scorer import NAPALScorer
+    from src.evaluation.evaluator import NAPALEvaluator
+    from src.workflow.annual_manager import AnnualWorkflowManager
+except ModuleNotFoundError as e:
+    missing = e.name if hasattr(e, 'name') else str(e)
+    print(f"ERROR: Missing Python dependency: {missing}\n")
+    print("Quick fixes:")
+    print("  1) If you use a virtual environment, activate it, e.g.:\n     source napal_env/bin/activate")
+    print("  2) Install project dependencies into the active environment:\n     python3 -m pip install --upgrade pip && pip install -r requirements.txt")
+    print("  3) If you only need the missing package, install it directly, e.g.:\n     python3 -m pip install pyyaml  # or the package name shown above")
+    print("After installing, re-run: python3 demo.py\n")
+    sys.exit(1)
 
 def demo_test_generation():
     """Demonstrate test generation"""

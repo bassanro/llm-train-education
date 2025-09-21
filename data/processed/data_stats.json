@@ -1,0 +1,24 @@
+{
+  "total_examples": 9,
+  "train_examples": 7,
+  "eval_examples": 2,
+  "task_type_distribution": {
+    "rubric_generation": 3,
+    "question_generation": 3,
+    "answer_generation": 1
+  },
+  "subject_area_distribution": {
+    "vocabulary": 3,
+    "reading_comprehension": 2,
+    "writing": 2
+  },
+  "difficulty_distribution": {
+    "2.0": 2,
+    "3.0": 1
+  },
+  "question_type_distribution": {
+    "short_answer": 3,
+    "multiple_choice": 2,
+    "extended_response": 2
+  }
+}

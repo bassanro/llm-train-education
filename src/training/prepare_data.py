@@ -192,12 +192,26 @@ Requirements:
                 logger.warning(f"Skipping invalid file: {json_file}")
 
         # Split into train and eval sets
-        train_examples, eval_examples = train_test_split(
-            all_examples,
-            test_size=self.config.eval_split,
-            random_state=42,
-            stratify=[ex['task_type'] for ex in all_examples]
-        )
+        if not all_examples:
+            logger.warning("No training examples extracted from raw data")
+            return [], []
+
+        stratify_labels = [ex['task_type'] for ex in all_examples]
+        try:
+            train_examples, eval_examples = train_test_split(
+                all_examples,
+                test_size=self.config.eval_split,
+                random_state=42,
+                stratify=stratify_labels
+            )
+        except ValueError as e:
+            # This can happen with very small datasets where stratification isn't possible
+            logger.warning(f"Stratified split failed ({e}); falling back to non-stratified split")
+            train_examples, eval_examples = train_test_split(
+                all_examples,
+                test_size=self.config.eval_split,
+                random_state=42
+            )
 
         logger.info(f"Total examples: {len(all_examples)}")
         logger.info(f"Train examples: {len(train_examples)}")
