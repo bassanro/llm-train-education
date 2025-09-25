@@ -18,7 +18,7 @@ import nltk
 from nltk.translate.bleu_score import sentence_bleu
 from rouge_score import rouge_scorer
 
-from ..training.utils import TextProcessor, QuestionValidator
+from src.training.utils import TextProcessor, QuestionValidator
 from ..scoring.scorer import NAPALScorer
 
 logging.basicConfig(level=logging.INFO)

@@ -20,7 +20,7 @@ from transformers import (
 from peft import PeftModel
 import re
 
-from ..training.utils import TextProcessor, QuestionValidator
+from src.training.utils import TextProcessor, QuestionValidator
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
