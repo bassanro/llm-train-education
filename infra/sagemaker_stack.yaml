@@ -1,0 +1,65 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'CloudFormation stack to create S3 bucket and SageMaker execution role for NAPAL training'
+
+Parameters:
+  BucketName:
+    Type: String
+    Description: Name of the S3 bucket to create for datasets and checkpoints
+  RoleName:
+    Type: String
+    Default: NAPAL-SageMaker-Execution-Role
+    Description: Name of the SageMaker execution role to create
+
+Resources:
+  NAPALS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref BucketName
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+    DeletionPolicy: Retain
+
+  SageMakerExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Ref RoleName
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - sagemaker.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSageMakerFullAccess
+        - arn:aws:iam::aws:policy/CloudWatchLogsFullAccess
+      Policies:
+        - PolicyName: S3AccessForNAPAL
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:PutObject
+                  - s3:GetObject
+                  - s3:ListBucket
+                  - s3:PutObjectAcl
+                Resource:
+                  - !Sub arn:aws:s3:::${BucketName}
+                  - !Sub arn:aws:s3:::${BucketName}/*
+
+Outputs:
+  S3BucketName:
+    Description: Name of the S3 bucket created for datasets
+    Value: !Ref NAPALS3Bucket
+  SageMakerRoleArn:
+    Description: ARN of the SageMaker IAM execution role
+    Value: !GetAtt SageMakerExecutionRole.Arn
+  SageMakerRoleName:
+    Description: Name of the created SageMaker execution role
+    Value: !Ref SageMakerExecutionRole

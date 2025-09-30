@@ -89,3 +89,15 @@ year3_settings:
   sentence_complexity: "simple_compound"
   content_appropriateness: "age_8_9"
   reading_level: "grade_3"
+
+# AWS settings (added by deploy)
+aws:
+  s3_bucket: "my-napal-bucket"
+  s3_prefix: "napal-datasets"
+  region: "ap-southeast-2"
+  sagemaker_role_arn: "arn:aws:iam::851725462345:role/NAPAL-SageMaker-Role"
+  sagemaker_instance_type: "ml.g4dn.xlarge"
+  sagemaker_instance_count: 1
+  # Optional: entry point and source dir for SageMaker
+  sagemaker_entry_point: "src/training/fine_tune.py"
+  sagemaker_source_dir: "."
