@@ -18,6 +18,7 @@ from pathlib import Path
 import boto3
 import sagemaker
 from sagemaker.huggingface import HuggingFace
+import re
 
 
 def load_config(path: str):
@@ -89,8 +90,12 @@ def submit_job(config_path: str, role_arn: str, region: str, instance_type: str,
     # Use a SageMaker-supported transformers version by default
     transformers_version = aws_cfg.get('transformers_version', '4.36.0')
     # Use a compatible pytorch version; adjust if you have specific needs
-    pytorch_version = aws_cfg.get('pytorch_version', '2.1.1')
-    py_version = aws_cfg.get('py_version', 'py39')
+    # Default to a widely-supported SageMaker pytorch version. If your SDK supports newer
+    # versions you can override via configs or --image-uri to use a custom image.
+    pytorch_version = aws_cfg.get('pytorch_version', '2.1.0')
+    py_version = aws_cfg.get('py_version', 'py310')
+    if 'py_version' not in aws_cfg:
+        print("Note: using default python version 'py310' for SageMaker training image")
 
     estimator_kwargs = dict(
         entry_point=entry_point,
@@ -125,8 +130,30 @@ def submit_job(config_path: str, role_arn: str, region: str, instance_type: str,
     if not job_name:
         job_name = f"napal-hf-{int(time.time())}"
 
+    # Sanitize job name to remove problematic characters (quotes, spaces, etc.)
+    safe_job_name = re.sub(r"[^A-Za-z0-9-]", "-", job_name)
+    # collapse consecutive dashes
+    safe_job_name = re.sub(r"-+", "-", safe_job_name).strip('-')
+    # SageMaker training job name length limit — keep under 63 chars
+    if len(safe_job_name) > 63:
+        safe_job_name = safe_job_name[:63]
+
+    if safe_job_name != job_name:
+        print(f"Warning: job name sanitized from '{job_name}' to '{safe_job_name}'")
+    job_name = safe_job_name
+
     print(f"Submitting SageMaker training job '{job_name}' ...")
-    huggingface_estimator.fit(inputs=data_channels, job_name=job_name)
+    try:
+        huggingface_estimator.fit(inputs=data_channels, job_name=job_name)
+    except Exception as e:
+        print(f"Error submitting SageMaker training job: {e}")
+        # Try to provide more helpful info if boto3/sagemaker returned a structured error
+        try:
+            import traceback
+            traceback.print_exc()
+        except Exception:
+            pass
+        sys.exit(1)
     print('Job submitted. Check SageMaker console for progress.')
 
 
